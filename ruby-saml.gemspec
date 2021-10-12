@@ -23,29 +23,11 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 1.8.7'
   s.summary = %q{SAML Ruby Tookit}
 
-  # Because runtime dependencies are determined at build time, we cannot make
-  # Nokogiri's version dependent on the Ruby version, even though we would
-  # have liked to constrain Ruby 1.8.7 to install only the 1.5.x versions.
-  if defined?(JRUBY_VERSION)
-    if JRUBY_VERSION < '9.2.0.0'
-      s.add_runtime_dependency('nokogiri', '>= 1.8.2', '<= 1.8.5')
-      s.add_runtime_dependency('jruby-openssl', '>= 0.9.8')
-      s.add_runtime_dependency('json', '< 2.3.0')
-    else
-      s.add_runtime_dependency('nokogiri', '>= 1.8.2')
-    end
-  elsif RUBY_VERSION < '1.9'
-    s.add_runtime_dependency('uuid')
-    s.add_runtime_dependency('nokogiri', '<= 1.5.11')
-  elsif RUBY_VERSION < '2.1'
-    s.add_runtime_dependency('nokogiri', '>= 1.5.10', '<= 1.6.8.1')
-    s.add_runtime_dependency('json', '< 2.3.0')
-  elsif RUBY_VERSION < '2.3'
-    s.add_runtime_dependency('nokogiri', '>= 1.9.1', '<= 1.10.0')
-  else
-    s.add_runtime_dependency('nokogiri', '>= 1.10.5')
-    s.add_runtime_dependency('rexml')
-  end
+  # Overriding nokogiri's ruby version restrictions. For some reason, they
+  # didn't work for me, so sticking us to ruby 2.2 restrictions, which is the
+  # version we're currently using until they (ruby-saml devs) fix the issue.
+  # Also check https://github.com/onelogin/ruby-saml/issues/623 for more info on this.
+  s.add_runtime_dependency('nokogiri', '>= 1.9.1', '< 1.10.0')
 
   s.add_development_dependency('coveralls')
   s.add_development_dependency('minitest', '~> 5.5')
